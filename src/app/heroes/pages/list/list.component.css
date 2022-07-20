@@ -1,0 +1,9 @@
+.hero-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.hero-card {
+	width: 20%;
+}
