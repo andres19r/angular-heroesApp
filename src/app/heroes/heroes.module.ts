@@ -9,7 +9,7 @@ import { SearchComponent } from './pages/search/search.component';
 import { HeroComponent } from './pages/hero/hero.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ListComponent } from './pages/list/list.component';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -23,7 +23,8 @@ import { ListComponent } from './pages/list/list.component';
   imports: [
     CommonModule,
     HeroesRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FlexLayoutModule
   ]
 })
 export class HeroesModule { }
