@@ -10,6 +10,7 @@ import { HeroComponent } from './pages/hero/hero.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ListComponent } from './pages/list/list.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HeroCardComponent } from './components/hero-card/hero-card.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SearchComponent,
     HeroComponent,
     HomeComponent,
-    ListComponent
+    ListComponent,
+    HeroCardComponent
   ],
   imports: [
     CommonModule,
