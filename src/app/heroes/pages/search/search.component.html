@@ -3,7 +3,7 @@
     <h1>Heroes Search Engine</h1>
     <mat-divider></mat-divider>
   </div>
-  <div>
+  <div fxLayout="column">
     <h3>Search engine</h3>
     <mat-form-field appearance="fill">
       <mat-label>Number</mat-label>
@@ -24,7 +24,11 @@
         <mat-option *ngFor="let hero of heroes" [value]="hero">
           {{ hero.superhero }}
         </mat-option>
+        <mat-option value="" *ngIf="heroes.length === 0 && term.trim().length > 0">
+          We cannot find anything with the term '{{term}}'
+        </mat-option>
       </mat-autocomplete>
+
     </mat-form-field>
   </div>
 
