@@ -2,12 +2,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Hero } from '../interfaces/heroes.interface';
 
 @Pipe({
-  name: 'image'
+  name: 'image',
 })
 export class ImagePipe implements PipeTransform {
-
   transform(hero: Hero): string {
-    return hero.id ? `assets/heroes/${ hero.id }.jpg` : `assets/no-image.png`
+    if (!hero.id && !hero.alt_img) {
+      return 'assets/no-image.png';
+    } else if (hero.alt_img) {
+      return hero.alt_img;
+    } else {
+      return hero.id ? `assets/heroes/${hero.id}.jpg` : 'assets/no-image.png';
+    }
   }
-
 }
