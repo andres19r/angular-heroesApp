@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Hero, Publisher } from '../../interfaces/heroes.interface';
 import { HeroesService } from '../../services/heroes.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-add',
@@ -18,18 +20,31 @@ export class AddComponent implements OnInit {
     characters: '',
     first_appearance: '',
     publisher: Publisher.DCComics,
-    alt_img: ''
+    alt_img: '',
+  };
+
+  constructor(
+    private heroesService: HeroesService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.params
+      .pipe(switchMap(({ id }) => this.heroesService.getHeroById(id)))
+      .subscribe((hero) => (this.hero = hero));
   }
 
-  constructor(private heroesService: HeroesService) {}
-
-  ngOnInit(): void {}
-
   save(): void {
-    if(this.hero.superhero.trim().length === 0) return
-    this.heroesService.addHero(this.hero)
-      .subscribe(resp => {
-        console.log('Response', resp)
-      })
+    if (this.hero.superhero.trim().length === 0) return;
+    if (this.hero.id) {
+      this.heroesService
+        .updateHero(this.hero)
+        .subscribe((hero) => console.log('updating hero'));
+    } else {
+      this.heroesService.addHero(this.hero).subscribe((hero) => {
+        this.router.navigate(['/heroes/edit', hero.id])
+      });
+    }
   }
 }
