@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Hero, Publisher } from '../../interfaces/heroes.interface';
 import { HeroesService } from '../../services/heroes.service';
 import { switchMap } from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add',
@@ -26,11 +27,12 @@ export class AddComponent implements OnInit {
   constructor(
     private heroesService: HeroesService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    if(!this.router.url.includes('edit')) return
+    if (!this.router.url.includes('edit')) return;
     this.activatedRoute.params
       .pipe(switchMap(({ id }) => this.heroesService.getHeroById(id)))
       .subscribe((hero) => (this.hero = hero));
@@ -41,15 +43,22 @@ export class AddComponent implements OnInit {
     if (this.hero.id) {
       this.heroesService
         .updateHero(this.hero)
-        .subscribe((hero) => console.log('updating hero'));
+        .subscribe((hero) => this.showSnackBar('updated record'));
     } else {
       this.heroesService.addHero(this.hero).subscribe((hero) => {
-        this.router.navigate(['/heroes/edit', hero.id])
+        this.router.navigate(['/heroes/edit', hero.id]);
+        this.showSnackBar('created record')
       });
     }
   }
 
   deleteHero(): void {
-    this.heroesService.deleteHero(this.hero.id!).subscribe(resp => this.router.navigate(['/heroes']))
+    this.heroesService
+      .deleteHero(this.hero.id!)
+      .subscribe((resp) => this.router.navigate(['/heroes']));
+  }
+
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Ok', {duration: 2500})
   }
 }
